@@ -2,6 +2,7 @@ import std.xml;
 import std.stdio;
 import std.string;
 import std.file;
+import std.process;
 
 struct Log
 {
@@ -74,25 +75,9 @@ void main(string[] args)
 	}
 
 	// Print a javascript array
-	int count=0;
-	write("let logs = [");
-	bool first=true;
 	foreach(log;logs){
 		if(log.result=="found it"){
-			count++;
-			auto s= "";
-			if(first){
-				first=false;
-			}
-			else{
-				s~=",";
-			}
-			s~="{";
-			s~="geocode : \"" ~ log.code ~ "\",";
-			s~="time : \"" ~ log.time ~ "\"";
-			s~="}";
-			write(s);
+			spawnProcess(["firefox", "-new-tab", "http://www.geocaching.com/geocache/"~log.code~"?date="~log.time~"&type=found"]);
 		}
 	}
-	writeln("]");
 }

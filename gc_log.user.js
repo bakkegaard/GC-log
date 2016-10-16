@@ -9,47 +9,17 @@
 // ==/UserScript==
 (function(){
 
-	// List of all the Geocaches to log
-	var logs = [];
-
 	//Log text on cache page
 	var logtext= "TFTC!";
-
-
-	//Make button to activate the script
-	var input=document.createElement("input");
-	input.type="button";
-	input.value="Log Caches!";
-	input.onclick = openCaches;
-
-	//Append to the site
-	document.body.appendChild(input); 
-
-	//Function to iterate through list of geocaches and open them in tab
-	function openCaches(){
-		for(var i =0; i<logs.length;i++){
-			var url= "http://www.geocaching.com/geocache/"+logs[i].geocode;
-			GM_openInTab(url);
-		}
-	}
 
 	//Magic function to get URL parameters
 	function getURLParameter(name) {
 		return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
 	}
 
-	//Hash table to look up geocodes
-	var table= {};
-
-	//File the hash table. Key is geocode, value is date
-	for(var i=0;i<logs.length;i++){
-		table[logs[i].geocode]=new moment(logs[i].time);
-	}
-
-
 	//Get the current URL
 	var URL = window.location.href;
-
+	
 	//Check if we are on a geocache site
 	if(URL.includes("/geocache/")){
 		//Get an element that only exsist if the cache is logged
@@ -58,6 +28,12 @@
 		if(element!=undefined && element.textContent=="Found It!"){
 			window.close(); //Close window
 		}
+
+		var type= getURLParameter("type");
+		var date= getURLParameter("date");
+
+		if(date==null || type==null) return;
+
 		//Get the logbutton
 		var element = document.getElementById('ctl00_ContentBody_GeoNav_logButton');
 
@@ -69,7 +45,7 @@
 		var url = element.getAttribute("href");
 
 		//Open a new tab for logging
-		GM_openInTab("http://geocaching.com/"+url+"&gcCode="+gcCode);
+		GM_openInTab("http://geocaching.com/"+url+"&type="+type+"&date="+date);
 	}
 	//Check if we are on a log site
 	else if(URL.includes("/seek/log")){
@@ -81,14 +57,13 @@
 		logtype.options[0].removeAttribute("selected");
 		logtype.options[1].setAttribute("selected","selected");
 
-		//Get the GC code from the URL
-		var gcCode=getURLParameter("gcCode");
-
 		//Lookup the date in our hashtable
-		var date= table[gcCode];
+		var date= getURLParameter("date");
 
 		//If it doesnt exsist quit
 		if(date==undefined) return;
+
+		date= moment(date);
 
 		//Otherwise make the date string
 		var dateString= (parseInt(date.month())+1)+"/"+ date.date()+"/"+date.year();
