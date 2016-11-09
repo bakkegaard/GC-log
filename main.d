@@ -74,10 +74,11 @@ void main(string[] args)
 		}
 	}
 
-	// Print a javascript array
+	// Open tab in Firefox
 	foreach(log;logs){
 		if(log.result=="found it"){
-			spawnProcess(["firefox", "-new-tab", "http://www.geocaching.com/geocache/"~log.code~"?date="~log.time~"&type=found"]);
+			spawnProcess(["firefox", "-new-tab", "http://www.geocaching.com/geocache/"~log.code~"?date="~log.time~"&type="~log.result~"&comment="~log.comment]);
+
 		}
 	}
 }
