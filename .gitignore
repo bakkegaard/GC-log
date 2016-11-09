@@ -1,0 +1,6 @@
+*.xml
+*.gpx
+*.o
+main
+jquery*
+moment*
