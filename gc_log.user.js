@@ -9,7 +9,6 @@
 // @unwrap
 // ==/UserScript==
 (function(){
-
 	//Log text on cache page
 	var logtext= "TFTC!";
 
@@ -35,6 +34,7 @@
 	if(URL.includes("/geocache/")){
 		//Get an element that only exsist if the cache is logged
 		var element = $("#ctl00_ContentBody_GeoNav_logText");
+		
 
 		//If we already found the cache
 		if(element.html()=="Found It!"){
@@ -49,28 +49,29 @@
 
 		//If we have a did not find log and haven't logged it yet
 		if(type=="did not find" && element.html()!="Did Not Find"){
-
 			//Open a log tab
 			GM_openInTab("http://geocaching.com/"+url+"&type="+type+"&date="+date+"&comment="+comment);
 		}
 		else{
-
+/*
 			//If comment contains V\space or is just V
-			if(comment.includes("V ") || comment=="V"){
+			if(comment.substring(0,2)=="V " || comment=="V"){
 				//Open a maintenance wet log
 				GM_openInTab("http://geocaching.com/"+url+"&type=maintenance&date="+date+"&comment=wet");
+
+				//Remove maintenance info from comment
+				if(comment="V") comment="";
+				else comment=comment.substring(2,comment.length);
 			}
 			//If comment contains L\space or is just L
-			else if(comment.includes("L ") || comment=="L"){
+			else if(comment.substring(0,2)="L " || comment=="L"){
 				//Open a maintenance logbook log
 				GM_openInTab("http://geocaching.com/"+url+"&type=maintenance&date="+date+"&comment=logbook");
-			}
 
-
-			//Clear comments of L and V
-			comment = comment.replace("V ","").replace("L ","").trim();
-			if(comment=="V" || comment=="L") comment="";
-
+				//Remove maintenance info from comment
+				if(comment="L") comment="";
+				else comment=comment.substring(2,comment.length);
+			}*/
 
 			//Open a new tab for logging
 			GM_openInTab("http://geocaching.com/"+url+"&type="+type+"&date="+date+"&comment="+comment);
@@ -83,6 +84,7 @@
 		var type= getURLParameter("type");
 		var date= getURLParameter("date");
 		var comment= getURLParameter("comment");
+		comment=comment.replace("\\n","\n");
 
 		//If comment is null set it to TFTC!
 		if(comment==null) comment="TFTC!";
@@ -117,7 +119,7 @@
 		date= moment(date);
 
 		//Make a date String
-		var dateString= (parseInt(date.month())+1)+"/"+ date.date()+"/"+date.year();
+		var dateString= date.format("MM/DD/YYYY");
 
 		//Set the date
 		var dateField= document.getElementById("uxDateVisited");
