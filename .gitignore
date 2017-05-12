@@ -1,6 +1,6 @@
 *.xml
 *.gpx
-*.o
 main
 jquery*
 moment*
+__pycache__
