@@ -2,7 +2,7 @@
 // @name        gc_log
 // @namespace   gc_log
 // @include     https://www.geocaching.com/*
-// @require     http://momentjs.com/downloads/moment.min.js
+// @require     https://momentjs.com/downloads/moment.min.js
 // @require     https://code.jquery.com/jquery-3.1.1.min.js
 // @version     0.1.0
 // @grant       GM_openInTab
@@ -116,8 +116,7 @@
 		}
 
 		//Create a moment object from data
-		date= moment(date);
-
+		date= moment(date.split("T")[0]);
 		//Make a date String
 		var dateString= date.format("MM/DD/YYYY");
 
