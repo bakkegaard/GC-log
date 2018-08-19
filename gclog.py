@@ -20,8 +20,6 @@ def helper(log):
     result      = log[2].text
     comment     = log[3].text
 
-    #parse date_string
-    # date        = datetime.strptime(date_string.split("T")[0],"%Y-%m-%d")
     date = date_string
 
     return Geocache(gccode,date,result,comment)
@@ -51,7 +49,7 @@ def main():
         url = string_url % (log.gccode,log.date,log.result,log.comment)
 
         subprocess.check_output(['firefox','-new-tab',url])
-        sleep(1)
+        sleep(5)
 
 
 if __name__ == "__main__":
