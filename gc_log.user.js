@@ -10,16 +10,16 @@
 // ==/UserScript==
 (function(){
 	//Log text on cache page
-	var logtext= "TFTC!";
+	let logtext= "TFTC!";
 
 	//Magic function to get URL parameters
 	function getURLParameter(name) {
 		return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
 	}
 	//See if we got some speciel parameters
-	var type = getURLParameter("type");
-	var date = getURLParameter("date");
-	var comment = getURLParameter("comment");
+	let type = getURLParameter("type");
+	let date = getURLParameter("date");
+	let comment = getURLParameter("comment");
 
 	//If comments are null set to empty string, then we don't have to check for null everywhere
 	if(comment==null) comment="";
@@ -28,13 +28,12 @@
 	if(date==null || type==null) return;
 
 	//Get the current URL
-	var URL = window.location.href;
+	let URL = window.location.href;
 
 	//Check if we are on a geocache site
 	if(URL.includes("/geocache/")){
 		//Get an element that only exsist if the cache is logged
-		var element = $("#ctl00_ContentBody_GeoNav_logText");
-		
+		let element = $("#ctl00_ContentBody_GeoNav_logText");
 
 		//If we already found the cache
 		if(element.html()=="Found It!"){
@@ -42,10 +41,10 @@
 			window.close();
 		}
 		//Get the logbutton
-		var log_button = $("#ctl00_ContentBody_GeoNav_logButton");
+		let log_button = $("#ctl00_ContentBody_GeoNav_logButton");
 
 		//Get url from logbutton
-		var url = log_button.attr("href");
+		let url = log_button.attr("href");
 
 		//If we have a did not find log and haven't logged it yet
 		if(type=="did not find" && element.html()!="Did Not Find"){
@@ -81,9 +80,9 @@
 	else if(URL.includes("/seek/log")){
 
 		//Get parameters
-		var type= getURLParameter("type");
-		var date= getURLParameter("date");
-		var comment= getURLParameter("comment");
+		let type= getURLParameter("type");
+		let date= getURLParameter("date");
+		let comment= getURLParameter("comment");
 		comment=comment.replace("\\n","\n");
 
 		//If comment is null set it to TFTC!
@@ -93,7 +92,7 @@
 		if(date==null || type==null || comment==null) return;
 
 		//Get the logtype option
-		var logtype = $("#ctl00_ContentBody_LogBookPanel1_ddLogType");
+		let logtype = $("#ctl00_ContentBody_LogBookPanel1_ddLogType");
 
 		//Remove current option selection
 		logtype.val("-1").removeAttr("selected");
@@ -118,14 +117,14 @@
 		//Create a moment object from data
 		date= moment(date.split("T")[0]);
 		//Make a date String
-		var dateString= date.format("MM/DD/YYYY");
+		let dateString= date.format("MM/DD/YYYY");
 
 		//Set the date
-		var dateField= document.getElementById("uxDateVisited");
+		let dateField= document.getElementById("uxDateVisited");
 		dateField.setAttribute("value",dateString);
 
 		//Get the textField
-		var textField = $("#ctl00_ContentBody_LogBookPanel1_uxLogInfo");
+		let textField = $("#ctl00_ContentBody_LogBookPanel1_uxLogInfo");
 
 		//Set the logText
 		textField.html(comment);
